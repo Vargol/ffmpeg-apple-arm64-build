@@ -1,11 +1,19 @@
 # FFmpeg
-This script is made to compile FFmpeg with common codecs on Linux and Mac OSX.
+This script is made to compile FFmpeg with common codecs on Mac OSX running on Apple Silicon.
+The script was orginally taken from https://gitlab.com/martinr92/ffmpeg and has been modifed to build
+the libraries with ARM64/NEON code were applicable.
+
+The version of x265 also includes the Apple provided patch used by Handbreak, 
+https://github.com/HandBrake/HandBrake/blob/master/contrib/x265/A01-darwin-neon-support-for-arm64.patch
+forward ported to apply to newer versions of x265 this is not in the main line code but runs significantly faster.
+It seems both this and x265's mianline NEON code break multilib linkage if thats importnat to you
+but a 12bit build seems to support 12bit, 10bit and 8bit encoding anyway. This version also cirrectly
+reports that  ARM64 is 64 bit not 32 bit :-)
 
 ## Result
-This repository builds FFmpeg and FFprobe for Mac OSX and Linux using
+This repository builds FFmpeg and FFprobe for Mac OSX using
 - build tools
     - [cmake](https://cmake.org/)
-    - [nasm](http://www.nasm.us/)
     - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
 - video codecs
     - [aom](https://aomedia.org/) for AV1 de-/encoding
