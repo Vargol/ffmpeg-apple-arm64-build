@@ -24,6 +24,7 @@ This repository builds FFmpeg and FFprobe for Mac OSX using
 - audio codecs
     - [LAME](http://lame.sourceforge.net/) for MP3 encoding
     - [opus](https://opus-codec.org/) for Opus de-/encoding
+    - [vorbis](https://www.xiph.org) for Vorbis de-/encoding
 
 To get a full list of all formats and codecs that are supported just execute
 ```
@@ -35,12 +36,12 @@ To get a full list of all formats and codecs that are supported just execute
 There are just a few dependencies to other tools. Most of the software is compiled or downloaded during script execution. Also most of the tools should be already available on the system by default.
 
 ### Required
-- c and c++ compiler like AppleClang (included in Xcode) or gcc (on Linux)
-- curl for downloading files
+- c and c++ compiler like AppleClang (included in Xcode) or gcc
+- curl / git for downloading files
 - make
 
 ### Optional
-- nproc (on linux) or sysctl (on Mac OSX) for multicore compilation
+- sysctl (on Mac OSX) for multicore compilation
 
 ## Execution
 To run this script simply execute the build.sh script.
