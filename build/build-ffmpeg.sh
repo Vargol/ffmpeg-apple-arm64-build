@@ -36,7 +36,7 @@ export CFLAGS="$FF_FLAGS"
 # --pkg-config-flags="--static" is required to respect the Libs.private flags of the *.pc files
 ./configure --prefix="$4" --enable-gpl --pkg-config-flags="--static"   --pkg-config=$3/bin/pkg-config \
     --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
-    --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect --enable-audiotoolbox --enable-videotoolbox 
+    --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis
 checkStatus $? "configuration of ffmpeg failed"
 
 # start build
