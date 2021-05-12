@@ -67,6 +67,12 @@ checkStatus $? "build pkg-config"
 echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
+echoSection "compile svt-av1"
+$SCRIPT_DIR/build-svt-av1.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-svt-av1log" 2>&1
+checkStatus $? "build svt-av1"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
 echoSection "compile ogg"
 $SCRIPT_DIR/build-ogg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-ogg.log" 2>&1
 checkStatus $? "build ogg"

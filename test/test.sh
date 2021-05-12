@@ -7,6 +7,13 @@
 # load functions
 . $1/functions.sh
 
+# test svt av1
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test svt av1 encoding"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libsvtav1" -an "$3/test-svt-av1.mp4" > "$3/test-svt-av1.log" 2>&1
+checkStatus $? "test svt av1"
+echoDurationInSections $START_TIME
+
 # test aom av1
 START_TIME=$(currentTimeInSeconds)
 echoSection "run test aom av1 encoding"

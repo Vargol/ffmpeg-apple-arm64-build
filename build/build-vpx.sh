@@ -21,7 +21,8 @@ checkStatus $? "change directory failed"
 checkStatus $? "download of vpx failed"
 
 # TODO: checksum validation (if available)
-git clone https://github.com/webmproject/libvpx.git
+#git clone https://github.com/webmproject/libvpx.git
+git clone https://chromium.googlesource.com/webm/libvpx 
 cd "libvpx/"
 checkStatus $? "change directory failed"
 
@@ -34,9 +35,11 @@ checkStatus $? "change directory failed"
                     --enable-multithread \
                     --enable-experimental \
                     --disable-install-docs \
-                    --disable-debug-libs 
+                    --disable-debug-libs
 
 checkStatus $? "configuration of vpx failed"
+
+sed -i.original -e 's/march=armv8-a /march=armv8.4-a+dotprod /g' libs-arm64-darwin20-gcc.mk
 
 # build
 make -j $4
