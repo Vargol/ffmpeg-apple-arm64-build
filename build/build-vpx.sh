@@ -27,6 +27,8 @@ cd "libvpx/"
 checkStatus $? "change directory failed"
 
 # prepare build
+sed -i.original -e 's/march=armv8-a/march=armv8.4-a+dotprod/g' build/make/configure.sh 
+
 ./configure --prefix="$3" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-vp8 \
                     --enable-vp9 \
                     --enable-internal-stats \
@@ -39,7 +41,6 @@ checkStatus $? "change directory failed"
 
 checkStatus $? "configuration of vpx failed"
 
-sed -i.original -e 's/march=armv8-a /march=armv8.4-a+dotprod /g' libs-arm64-darwin20-gcc.mk
 
 # build
 make -j $4
