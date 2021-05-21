@@ -56,7 +56,7 @@ COMPILATION_START_TIME=$(currentTimeInSeconds)
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile cmake"
-$SCRIPT_DIR/build-cmake.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.19" "3.19.1" > "$WORKING_DIR/build-cmake.log" 2>&1
+$SCRIPT_DIR/build-cmake.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.20" "3.20.2" > "$WORKING_DIR/build-cmake.log" 2>&1
 checkStatus $? "build cmake"
 echoDurationInSections $START_TIME
 
@@ -64,6 +64,12 @@ START_TIME=$(currentTimeInSeconds)
 echoSection "compile pkg-config"
 $SCRIPT_DIR/build-pkg-config.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "0.29.2" > "$WORKING_DIR/build-pkg-config.log" 2>&1
 checkStatus $? "build pkg-config"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile x265"
+$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.4" > "$WORKING_DIR/build-x265.log" 2>&1
+checkStatus $? "build x265"
 echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
@@ -100,12 +106,6 @@ START_TIME=$(currentTimeInSeconds)
 echoSection "compile x264"
 $SCRIPT_DIR/build-x264.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" > "$WORKING_DIR/build-x264.log" 2>&1
 checkStatus $? "build x264"
-echoDurationInSections $START_TIME
-
-START_TIME=$(currentTimeInSeconds)
-echoSection "compile x265"
-$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.4" > "$WORKING_DIR/build-x265.log" 2>&1
-checkStatus $? "build x265"
 echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
