@@ -7,6 +7,13 @@
 # load functions
 . $1/functions.sh
 
+# test x265
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test x265 encoding"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p -an "$3/test-x265.mp4" > "$3/test-x265.log" 2>&1
+checkStatus $? "test x265"
+echoDurationInSections $START_TIME
+
 # test svt av1
 START_TIME=$(currentTimeInSeconds)
 echoSection "run test svt av1 encoding"
@@ -33,13 +40,6 @@ START_TIME=$(currentTimeInSeconds)
 echoSection "run test x264 encoding"
 $4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx264" -an "$3/test-x264.mp4" > "$3/test-x264.log" 2>&1
 checkStatus $? "test x264"
-echoDurationInSections $START_TIME
-
-# test x265
-START_TIME=$(currentTimeInSeconds)
-echoSection "run test x265 encoding"
-$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -an "$3/test-x265.mp4" > "$3/test-x265.log" 2>&1
-checkStatus $? "test x265"
 echoDurationInSections $START_TIME
 
 # test vp8

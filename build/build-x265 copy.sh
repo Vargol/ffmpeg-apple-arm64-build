@@ -19,12 +19,6 @@ make_directories() {
   checkStatus $? "create directory failed"
   cd "x265/"
   checkStatus $? "change directory failed"
-  mkdir "8bit"
-  checkStatus $? "create directory failed"
-  mkdir "10bit"
-  checkStatus $? "create directory failed"
-  mkdir "12bit"
-  checkStatus $? "create directory failed"
 
 }
 
@@ -55,85 +49,34 @@ configure_build () {
   #patch for arm64 / neon recognition
   patch -p1 < $1/apple_arm64_x265.patch
 
-  cd ../12bit
 
   # prepare build
 
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF -DMAIN12=ON ../x265/source
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DMAIN12=ON source
   #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
-  checkStatus $? "configuration of 12bit x265 failed"
-
-  cd ../10bit
-
-  # prepare build
-
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DMAIN10=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF ../x265/source
-  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
-  checkStatus $? "configuration of 10bit x265 failed"
-
-  cd ../8bit
-
-  # prepare build
-
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DENABLE_CLI=NO ../x265/source
-  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
-  checkStatus $? "configuration of 8bit x265 failed"
+  checkStatus $? "configuration of x265 failed"
 
 }
 
 make_clean() {
 
-  cd "$2/x265/8bit"
+  cd "$2/x265/x265"
   checkStatus $? "change directory failed"
 
   make clean
   checkStatus $? "make clean of x265 failed"
-
-  cd "$2/x265/10bit"
-  checkStatus $? "change directory failed"
-
-  make clean
-  checkStatus $? "make clean of x265 failed"
-
-  cd "$2/x265/12bit"
-  checkStatus $? "change directory failed"
-
-  make clean
-  checkStatus $? "make clean of x265 failed"
-
+  
 
 }
 
 make_compile () {
 
-  cd "$2/x265/12bit"
+  cd "$2/x265/x265"
   checkStatus $? "change directory failed"
 
   # build
   make -j $4
   checkStatus $? "build of x265 failed"
-
-  cd "$2/x265/10bit"
-  checkStatus $? "change directory failed"
-
-  # build
-  make -j $4
-  checkStatus $? "build of x265 failed"
-
-  cd "$2/x265/8bit"
-  checkStatus $? "change directory failed"
-
-  # build
-  make -j $4
-  checkStatus $? "build of x265 failed"
-
-  #merge the libaries together
-  ln -sf ../10bit/libx265.a libx265_main10.a
-  ln -sf ../12bit/libx265.a libx265_main12.a
-
-  mv libx265.a libx265_main.a
-  libtool -static -o libx265.a libx265_main.a libx265_main10.a libx265_main12.a 2>/dev/null
-  checkStatus $? "merge of x265 objects failed"
 
   # install
   make install

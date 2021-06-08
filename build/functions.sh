@@ -1,10 +1,24 @@
 #!/bin/sh
 
-checkStatus(){
+checkStatusAndAction() {
+
     if [ $1 -ne 0 ]
     then
         echo "check failed: $2"
-        exit 1
+        if [[ -z "${ACTION}" ]]
+        then
+          exit 1
+        else
+          return 1 
+        fi
+     fi
+}
+
+checkStatus(){
+    if [ $1 -ne 0 ]
+    then
+       echo "check failed: $2"
+       exit 1
     fi
 }
 

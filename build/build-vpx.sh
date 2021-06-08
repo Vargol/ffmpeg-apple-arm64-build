@@ -8,26 +8,39 @@
 # load functions
 . $1/functions.sh
 
-# start in working directory
-cd "$2"
-checkStatus $? "change directory failed"
-mkdir "vpx"
-checkStatus $? "create directory failed"
-cd "vpx/"
-checkStatus $? "change directory failed"
+SOFTWARE=vpx
 
-# download source
+make_directories() {
 
-checkStatus $? "download of vpx failed"
+  # start in working directory
+  cd "$2"
+  checkStatus $? "change directory failed"
+  mkdir ${SOFTWARE}
+  checkStatus $? "create directory failed"
+  cd ${SOFTWARE}
+  checkStatus $? "change directory failed"
 
-# TODO: checksum validation (if available)
-#git clone https://github.com/webmproject/libvpx.git
-git clone https://chromium.googlesource.com/webm/libvpx 
-cd "libvpx/"
-checkStatus $? "change directory failed"
+}
+
+download_code () {
+
+  cd "$2/${SOFTWARE}"
+  checkStatus $? "change directory failed"
+  # download source
+  git clone https://chromium.googlesource.com/webm/libvpx
+  checkStatus $? "download of ${SOFTWARE} failed"
+  cd "libvpx/"
+  checkStatus $? "change directory failed"
+
+}
+
+configure_build () {
+
+  cd "$2/${SOFTWARE}/libvpx/"
+  checkStatus $? "change directory failed"
 
 # prepare build
-sed -i.original -e 's/march=armv8-a/march=armv8.4-a+dotprod/g' build/make/configure.sh 
+sed -i.original -e 's/march=armv8-a/march=armv8.4-a+dotprod/g' build/make/configure.sh
 
 ./configure --prefix="$3" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-vp8 \
                     --enable-vp9 \
@@ -38,14 +51,57 @@ sed -i.original -e 's/march=armv8-a/march=armv8.4-a+dotprod/g' build/make/config
                     --enable-experimental \
                     --disable-install-docs \
                     --disable-debug-libs
+  
+  checkStatus $? "configuration of vpx failed"
 
-checkStatus $? "configuration of vpx failed"
+}
+
+make_clean() {
+
+  cd "$2/${SOFTWARE}/libvpx/"
+  checkStatus $? "change directory failed"
+  make clean
+  checkStatus $? "make clean for $SOFTWARE failed"
+
+}
+
+make_compile () {
+
+  cd "$2/${SOFTWARE}/libvpx/"
+  checkStatus $? "change directory failed"
+
+  # build
+  make -j $4
+  checkStatus $? "build of ${SOFTWARE} failed"
+
+  # install
+  make install
+  checkStatus $? "installation of ${SOFTWARE} failed"
+
+}
+
+build_main () {
+
+  if [[ -d "$2/${SOFTWARE}" && "${ACTION}" == "skip" ]]
+  then
+      return 0
+  elif [[ -d "$2/${SOFTWARE}" && -z "${ACTION}" ]]
+  then
+      echo "${SOFTWARE} build directory already exists but no action set. Exiting script"
+      exit 0
+  fi
 
 
-# build
-make -j $4
-checkStatus $? "build of vpx failed"
+  if [[ ! -d "$2/${SOFTWARE}" ]]
+  then
+    make_directories $@
+    download_code $@
+    configure_build $@
+  fi
 
-# install
-make install
-checkStatus $? "installation of vpx failed"
+  make_clean $@
+  make_compile $@
+
+}
+
+build_main $@

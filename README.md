@@ -16,6 +16,7 @@ This repository builds FFmpeg and FFprobe for Mac OSX using
     - [cmake](https://cmake.org/)
     - [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/)
 - video codecs
+    - [SVT-AV1](https://github.com/AOMediaCodec/SVT-AV1) for AV1 de-/encoding
     - [aom](https://aomedia.org/) for AV1 de-/encoding
     - [openh264](https://www.openh264.org/) for H.264 de-/encoding
     - [x264](http://www.videolan.org/developers/x264.html) for H.264 encoding
@@ -47,6 +48,12 @@ There are just a few dependencies to other tools. Most of the software is compil
 To run this script simply execute the build.sh script.
 ```
 ./build.sh
+This now has an optional parameter, either skip or clean.
+This is used for re-runs of the script and it will either skip previously built codecs
+or recompile existing codecs. Note it using this options ffmpeg is always recomiled afterwards.
+e.g. is you want to refresh just the aom codec, them delete the aom directory from the build folder, and run build.sh skip
+and it will skip all the exist folders and download and build libaom.
+
 ```
 
 ## Folder Structure
@@ -62,7 +69,7 @@ Now execute the script using:
 ```
 
 After the execution a new folder called "out" exists. It contains the compiled FFmpeg binary (in the bin sub-folder).
-The ffmpeg-success.zip contains also all binary files of FFmpeg.
+The ffmpeg-success.zip contains also all binary files for FFmpeg.
 
 ## Build failed?
 Check the detailed logfiles in the working directory. Each build step has its own file starting with "build-*".

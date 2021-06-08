@@ -1,9 +1,25 @@
 #!/bin/sh
 
 # get rid of macports - libiconv
-echo $PATH
 export PATH=`echo $PATH | sed 's/:/\n/g' | grep -v '/opt/local' | xargs | tr ' ' ':'`
-echo $PATH
+
+ACTION=$1
+if [[ -z "${ACTION}" ]]
+then
+   echo "No action set, all failures wil stop the script" 
+elif [[  "${ACTION}" == "clean" ]]
+then
+   echo "Action set to clean, existing build folders will have make clean run" 
+elif [[ "${ACTION}" == "skip" ]]
+then
+   echo "Action set to clean, existing build folders will be skipped" 
+else
+   echo "Action set to ${ACTION}, unknow option should be clean or skip" 
+   exit 1
+fi
+
+
+export ACTION=$ACTION
 
 # some folder names
 BASE_DIR="$( cd "$( dirname "$0" )" > /dev/null 2>&1 && pwd )"
@@ -25,10 +41,10 @@ echo "output directory is ${OUT_DIR}"
 # prepare workspace
 echoSection "prepare workspace"
 mkdir "$TOOL_DIR"
-checkStatus $? "unable to create tool directory"
+checkStatusAndAction $? "unable to create tool directory"
 PATH="$TOOL_DIR/bin:$PATH"
 mkdir "$OUT_DIR"
-checkStatus $? "unable to create output directory"
+checkStatusAndAction $? "unable to create output directory"
 
 # detect CPU threads (nproc for linux, sysctl for osx)
 CPUS=1
@@ -74,7 +90,7 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile svt-av1"
-$SCRIPT_DIR/build-svt-av1.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-svt-av1log" 2>&1
+$SCRIPT_DIR/build-svt-av1.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-svt-av1.log" 2>&1
 checkStatus $? "build svt-av1"
 echoDurationInSections $START_TIME
 
