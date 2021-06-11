@@ -10,9 +10,25 @@
 # test x265
 START_TIME=$(currentTimeInSeconds)
 echoSection "run test x265 encoding"
-$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p -an "$3/test-x265.mp4" > "$3/test-x265.log" 2>&1
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p -an "$3/test-x265-8bit.mp4" > "$3/test-x265_8bit.log" 2>&1
 checkStatus $? "test x265"
 echoDurationInSections $START_TIME
+
+# test svt av1
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test x265 encoding"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p10le -an "$3/test-x265-10bit.mp4" > "$3/test-x265_10bit.log" 2>&1
+checkStatus $? "test x265"
+echoDurationInSections $START_TIME
+
+# test svt av1
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test x265 encoding"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p12le -an "$3/test-x265-12bit.mp4" > "$3/test-x265_12bit.log" 2>&1
+checkStatus $? "test x265"
+echoDurationInSections $START_TIME
+
+exit 0
 
 # test svt av1
 START_TIME=$(currentTimeInSeconds)
