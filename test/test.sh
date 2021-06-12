@@ -35,8 +35,6 @@ $4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p12le -an "$3/te
 checkStatus $? "test x265"
 echoDurationInSections $START_TIME
 
-exit 0
-
 # test svt av1
 START_TIME=$(currentTimeInSeconds)
 echoSection "run test svt av1 encoding"
