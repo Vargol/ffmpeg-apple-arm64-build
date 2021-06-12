@@ -2,14 +2,13 @@
 # $1 = script directory
 # $2 = working directory
 # $3 = tool directory
-# $4 = output directory
-# $5 = CPUs
-# $6 = FFmpeg version
+# $4 = CPUs
+# $5 = vorbis version - unised get heads from git
 
 # load functions
 . $1/functions.sh
 
-SOFTWARE=ffmpeg
+SOFTWARE=freetype
 
 make_directories() {
 
@@ -28,55 +27,41 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  curl -O https://ffmpeg.org/releases/ffmpeg-$6.tar.bz2
+  git clone https://gitlab.freedesktop.org/freetype/freetype.git
   checkStatus $? "download of ${SOFTWARE} failed"
-
-  # unpack ffmpeg
-  bunzip2 ffmpeg-$6.tar.bz2
-  tar -xf ffmpeg-$6.tar
-  cd "ffmpeg-$6/"
-  checkStatus $? "change directory failed"
 
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/"
+  checkStatus $? "change directory failed"
+  mkdir build_${SOFTWARE}
+  checkStatus $? "creating build  directory failed"
+  cd "build_${SOFTWARE}/" 
   checkStatus $? "change directory failed"
 
   # prepare build
-  FF_FLAGS="-L${3}/lib -I${3}/include"
-  export LDFLAGS="$FF_FLAGS"
-  export CFLAGS="$FF_FLAGS"
-  
-  # --pkg-config-flags="--static" is required to respect the Libs.private flags of the *.pc files
-  ./configure --prefix="$4" --enable-gpl --pkg-config-flags="--static"   --pkg-config=$3/bin/pkg-config \
-      --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
-      --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
-      --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass --enable-lto
-
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -D CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz=TRUE -DFT_WITH_HARFBUZZ=NO -DFT_WITH_BZIP2=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release ../$SOFTWARE
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
 
 make_clean() {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/build_${SOFTWARE}/"
   checkStatus $? "change directory failed"
   make clean
-  checkStatus $? "make clean for $SOFTWARE failed"
-
 
 }
 
 make_compile () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/build_${SOFTWARE}/"
   checkStatus $? "change directory failed"
 
   # build
-  make -j $5
+  make -j $4
   checkStatus $? "build of ${SOFTWARE} failed"
 
   # install
@@ -88,7 +73,17 @@ make_compile () {
 build_main () {
 
 
-  # ffmpeg we always want to rebuild
+set -x
+
+  if [[ -d "$2/${SOFTWARE}" && "${ACTION}" == "skip" ]]
+  then
+      return 0
+  elif [[ -d "$2/${SOFTWARE}" && -z "${ACTION}" ]]
+  then
+      echo "${SOFTWARE} build directory already exists but no action set. Exiting script"
+      exit 0
+  fi
+
 
   if [[ ! -d "$2/${SOFTWARE}" ]]
   then
