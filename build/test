@@ -1,0 +1,12 @@
+prefix=/Users/davidburnett/Documents/Source/ffmpeg/build-ffmpeg/tool
+exec_prefix=
+libdir=/lib
+includedir=/include
+Name: harfbuzz
+Description: HarfBuzz text shaping library
+Version: 2.8.1
+
+Libs: -L -lharfbuzz
+Libs.private: -lm     -framework ApplicationServices
+:qRequires.private: glib-2.0 >= 2.19.1 freetype2 >= 12.0.6 graphite2 >= 1.2.0
+Cflags: -I/harfbuzz

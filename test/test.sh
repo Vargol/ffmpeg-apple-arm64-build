@@ -7,6 +7,13 @@
 # load functions
 . $1/functions.sh
 
+# test libass subtitles 
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test libass subtitles"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:v "libx265" -pix_fmt yuv420p -vf "subtitles=$2/test.ass" -an "$3/test-x265-8bit.mp4" > "$3/test-x265_8bit.log" 2>&1
+checkStatus $? "test x265"
+echoDurationInSections $START_TIME
+
 # test x265
 START_TIME=$(currentTimeInSeconds)
 echoSection "run test x265 encoding"

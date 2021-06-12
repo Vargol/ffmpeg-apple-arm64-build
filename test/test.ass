@@ -1,0 +1,15 @@
+[Script Info]
+PlayResY: 600
+WrapStyle: 1
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Code, monospace,20,&H00B0B0B0,&H00B0B0B0,&H00303030,&H80000008,-1,0,0,0,100,100,0.00,0.00,1,1.00,2.00, 7 ,30,10,30,0
+Style: Expl, Arial,28,&H00FFB0B0,&H00B0B0B0,&H00303030,&H80000008,-1,0,0,0,100,100,0.00,0.00,1,1.00,2.00, 7 ,30,10,30,0
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,00:00:00.00,00:03:00.00,Expl, NTP,0,0,0,,{\pos(20,20)} Hello.
+Dialogue: 0,00:00:00.00,00:03:00.00,Code, NTP,0,0,0,,{\pos(40,160)} If you can see this then libass subtitles worked.
+Dialogue: 0,00:00:00.00,00:03:00.00,Expl, NTP,0,0,0,,{\pos(20,550)} These are the default subtitles type for MKV.
+

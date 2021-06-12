@@ -63,11 +63,11 @@ fi
 echo "use ${CPUS} cpu threads"
 COMPILATION_START_TIME=$(currentTimeInSeconds)
 
-#START_TIME=$(currentTimeInSeconds)
-#echoSection "compile autoconf"
-#$SCRIPT_DIR/build-autoconf.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "2.71" > "$WORKING_DIR/build-autoconf.log" 2>&1
-#checkStatus $? "build autoconf"
-#echoDurationInSections $START_TIME
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile autoconf"
+$SCRIPT_DIR/build-autoconf.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "2.71" > "$WORKING_DIR/build-autoconf.log" 2>&1
+checkStatus $? "build autoconf"
+echoDurationInSections $START_TIME
 
 # start build
 #START_TIME=$(currentTimeInSeconds)
@@ -87,6 +87,49 @@ echoSection "compile pkg-config"
 $SCRIPT_DIR/build-pkg-config.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "0.29.2" > "$WORKING_DIR/build-pkg-config.log" 2>&1
 checkStatus $? "build pkg-config"
 echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile FriBidi"
+$SCRIPT_DIR/build-fribidi.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "1.0.10" > "$WORKING_DIR/build-fribidi.log" 2>&1
+checkStatus $? "build FriBidi"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile zlib"
+$SCRIPT_DIR/build-zlib.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxxx" > "$WORKING_DIR/build-zlib.log" 2>&1
+checkStatus $? "build zlib"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile libpng"
+$SCRIPT_DIR/build-libpng.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxxxx" > "$WORKING_DIR/build-libpng.log" 2>&1
+checkStatus $? "build libpng"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile brotli"
+$SCRIPT_DIR/build-brotli.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxxxx" > "$WORKING_DIR/build-brotli.log" 2>&1
+checkStatus $? "build brotli"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile freetype"
+$SCRIPT_DIR/build-freetype.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-freetype.log" 2>&1
+checkStatus $? "build freetype"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile harfbuzz"
+$SCRIPT_DIR/build-harfbuzz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-harfbuzz.log" 2>&1
+checkStatus $? "build harfbuzz"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile libass"
+$SCRIPT_DIR/build-libass.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "0.15.1" > "$WORKING_DIR/build-libass.log" 2>&1
+checkStatus $? "build libass"
+echoDurationInSections $START_TIME
+
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile x265"
