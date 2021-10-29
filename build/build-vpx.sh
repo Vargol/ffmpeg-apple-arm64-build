@@ -40,7 +40,7 @@ configure_build () {
   checkStatus $? "change directory failed"
 
 # prepare build
-sed -i.original -e 's/march=armv8-a/march=armv8.4-a+dotprod/g' build/make/configure.sh
+sed -i.original -e 's/-march=armv8-a//g' build/make/configure.sh
 
 ./configure --prefix="$3" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-vp8 \
                     --enable-vp9 \
