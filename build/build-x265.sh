@@ -35,7 +35,8 @@ download_code() {
 
   # download source
   #curl -O -L https://github.com/videolan/x265/archive/$5.tar.gz
-  git clone https://github.com/videolan/x265.git
+  #git clone https://thub.com/videolan/x265.git
+  git clone https://bitbucket.org/multicoreware/x265_git.git --depth 1 --branch stable
   checkStatus $? "download of x265 failed"
 
   # TODO: checksum validation (if available)
@@ -48,7 +49,8 @@ download_code() {
 
 configure_build () {
 
-  cd "$2/x265/x265"
+  GIT_DIR=x265_git
+  cd "$2/x265/$GIT_DIR"
   checkStatus $? "change directory failed"
 
 
@@ -59,24 +61,21 @@ configure_build () {
 
   # prepare build
 
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF -DMAIN12=ON ../x265/source
-  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF -DMAIN12=ON ../$GIT_DIR/source
   checkStatus $? "configuration of 12bit x265 failed"
 
   cd ../10bit
 
   # prepare build
 
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DMAIN10=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF ../x265/source
-  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DMAIN10=ON -DENABLE_HDR10_PLUS=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF ../$GIT_DIR/source
   checkStatus $? "configuration of 10bit x265 failed"
 
   cd ../8bit
 
   # prepare build
 
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DENABLE_CLI=NO ../x265/source
-  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO source
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DENABLE_CLI=NO ../$GIT_DIR/source
   checkStatus $? "configuration of 8bit x265 failed"
 
 }
