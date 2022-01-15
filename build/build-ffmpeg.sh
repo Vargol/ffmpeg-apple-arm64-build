@@ -54,7 +54,7 @@ configure_build () {
       --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass --enable-lto
+      --enable-libass --enable-lto --enable-opencl
 
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
