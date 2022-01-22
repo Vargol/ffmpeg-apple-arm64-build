@@ -36,7 +36,10 @@ download_code() {
   # download source
   #curl -O -L https://github.com/videolan/x265/archive/$5.tar.gz
   #git clone https://thub.com/videolan/x265.git
-  git clone https://bitbucket.org/multicoreware/x265_git.git --depth 1 --branch stable
+
+  # Build fails when using git shallow clone
+  # https://bitbucket.org/multicoreware/x265_git/issues/572/pc-file-is-not-generated
+  git clone https://bitbucket.org/multicoreware/x265_git.git --branch stable
   checkStatus $? "download of x265 failed"
 
   # TODO: checksum validation (if available)
