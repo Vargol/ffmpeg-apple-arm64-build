@@ -114,7 +114,7 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile freetype"
-$SCRIPT_DIR/build-freetype.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-freetype.log" 2>&1
+$SCRIPT_DIR/build-freetype.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "VER-2-11-1" > "$WORKING_DIR/build-freetype.log" 2>&1
 checkStatus $? "build freetype"
 echoDurationInSections $START_TIME
 

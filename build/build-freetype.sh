@@ -27,7 +27,8 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://gitlab.freedesktop.org/freetype/freetype.git --branch $5
+#  git clone https://gitlab.freedesktop.org/freetype/freetype.git --branch $5
+  git clone https://gitlab.freedesktop.org/freetype/freetype.git
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
@@ -42,7 +43,11 @@ configure_build () {
   checkStatus $? "change directory failed"
 
   # prepare build
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -D CMAKE_DISABLE_FIND_PACKAGE_HarfBuzz=TRUE -DFT_WITH_HARFBUZZ=NO -DFT_WITH_BZIP2=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release ../$SOFTWARE
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 \
+        -DFT_DISABLE_HARFBUZZ=ON \
+        -DFT_REQUIRE_BZIP2=ON \
+        -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_BUILD_TYPE=Release ../$SOFTWARE
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
