@@ -1,4 +1,16 @@
 #!/bin/sh
+set -x
+
+
+# Option feature set to FALSE if not rewuired and TRUE if required
+ENABLE_FFPLAY=FALSE
+
+# set true for dependant features, export those needed in ffmpeg build script
+ 
+if [[ ${ENABLE_FFPLAY} == "TRUE" ]]
+then
+    export ENABLE_FFPLAY=TRUE
+fi
 
 # get rid of macports - libiconv
 export PATH=`echo $PATH | sed 's/:/\n/g' | grep -v '/opt/local' | xargs | tr ' ' ':'`
@@ -190,6 +202,17 @@ echoSection "compile opus"
 $SCRIPT_DIR/build-opus.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "1.3.1" > "$WORKING_DIR/build-opus.log" 2>&1
 checkStatus $? "build opus"
 echoDurationInSections $START_TIME
+
+set -x
+
+if [[ "${ENABLE_FFPLAY}" = "TRUE" ]]
+then
+    START_TIME=$(currentTimeInSeconds)
+    echoSection "compile sdl2"
+    $SCRIPT_DIR/build-sdl2.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxxx" > "$WORKING_DIR/build-sdl2.log" 2>&1
+    checkStatus $? "build sdl2"
+    echoDurationInSections $START_TIME
+fi
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile ffmpeg"
