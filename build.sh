@@ -1,13 +1,11 @@
 #!/bin/sh
-set -x
-
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
-if [[ ${ENABLE_FFPLAY} == "TRUE" ]]
+if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
 then
     export ENABLE_FFPLAY=TRUE
 fi
@@ -203,7 +201,6 @@ $SCRIPT_DIR/build-opus.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "1.3.
 checkStatus $? "build opus"
 echoDurationInSections $START_TIME
 
-set -x
 
 if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
 then
