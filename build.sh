@@ -205,7 +205,7 @@ echoDurationInSections $START_TIME
 
 set -x
 
-if [[ "${ENABLE_FFPLAY}" = "TRUE" ]]
+if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
 then
     START_TIME=$(currentTimeInSeconds)
     echoSection "compile sdl2"

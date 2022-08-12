@@ -51,7 +51,7 @@ configure_build () {
 
   FFMPEG_EXTRAS=''
   
-  if [[ ${ENABLE_FFPLAY} -eq TRUE ]]
+  if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
   then
        FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-sdl2"
   fi
