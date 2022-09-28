@@ -2,9 +2,26 @@
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
+ENABLE_TOPAZ=TRUE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
+if [[ "${ENABLE_TOPAZ}" == "TRUE" ]]
+then
+    export ENABLE_TOPAZ=TRUE
+    echo You have enabled Topaz Video AI support.
+    echo This execuatable can not be re-distributed under the terms of the GPL
+    echo and hence is for you private use only.
+    echo Using the Topaz Video AI filters requires an activate Topaz Video AI licence.
+    echo and install of the Application with the models you wish to use.
+    echo To use the Topaz Video AI filters you must set the environment variable VEAI_MODEL_DIR 
+    echo and log into Topaz using the login commanda
+    echo 
+    echo export VEAI_MODEL_DIR="/Applications/Topaz Video AI.app/Contents/Resources/models"
+    echo out/bin/login topaz_account_email_address topaz_account_password 
+
+fi
+
 if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
 then
     export ENABLE_FFPLAY=TRUE
@@ -173,7 +190,8 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile openh264"
-$SCRIPT_DIR/build-openh264.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "2.1.1" > "$WORKING_DIR/build-openh264.log" 2>&1
+#$SCRIPT_DIR/build-openh264.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "2.1.1" > "$WORKING_DIR/build-openh264.log" 2>&1
+$SCRIPT_DIR/build-openh264.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "2.3.0" > "$WORKING_DIR/build-openh264.log" 2>&1
 checkStatus $? "build openh264"
 echoDurationInSections $START_TIME
 
@@ -212,8 +230,15 @@ then
 fi
 
 START_TIME=$(currentTimeInSeconds)
+if [[ "${ENABLE_TOPAZ}" == "TRUE" ]]
+then
+echoSection "compile ffmpeg with topaz"
+$SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "5.1.0.13" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
+else
 echoSection "compile ffmpeg"
 $SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "5.1" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
+fi
+
 checkStatus $? "build ffmpeg"
 echoDurationInSections $START_TIME
 
