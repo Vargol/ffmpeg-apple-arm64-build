@@ -2,7 +2,9 @@
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
+
 ENABLE_TOPAZ=TRUE
+ENABLE_AVISYNTHPLUS=TRUE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -25,6 +27,13 @@ fi
 if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
 then
     export ENABLE_FFPLAY=TRUE
+fi
+
+if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
+then
+    export ENABLE_AVISYNTHPLUS=TRUE
+    echo "Enabling AviSynthPlus will meaan this binary is not longer staticly built."
+    echo "To use AviSynthPlus you will need to run from the tool/lib directory or a directory with a link to the tool/lib/libavisynth.dylib file"
 fi
 
 # get rid of macports - libiconv
@@ -228,6 +237,16 @@ then
     checkStatus $? "build sdl2"
     echoDurationInSections $START_TIME
 fi
+
+if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
+then
+    START_TIME=$(currentTimeInSeconds)
+    echoSection "compile AviSythnPlus"
+    $SCRIPT_DIR/build-avisynth.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "v3.7.2" > "$WORKING_DIR/build-avisynth.log" 2>&1
+    checkStatus $? "build AviSythnPlus"
+    echoDurationInSections $START_TIME
+fi
+
 
 START_TIME=$(currentTimeInSeconds)
 if [[ "${ENABLE_TOPAZ}" == "TRUE" ]]
