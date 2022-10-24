@@ -79,8 +79,8 @@ configure_build () {
       --enable-libaom --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass  --enable-opencl ${FFMPEG_EXTRAS} --enable-veai
-#      --enable-libass --enable-lto --enable-opencl ${FFMPEG_EXTRAS}
+      --enable-libass  --enable-opencl ${FFMPEG_EXTRAS} --enable-veai 
+#      --enable-libass --enable-lto --enable-libopenh264 --enable-opencl ${FFMPEG_EXTRAS}
 
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
