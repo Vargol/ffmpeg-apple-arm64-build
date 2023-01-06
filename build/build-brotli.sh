@@ -41,7 +41,7 @@ configure_build () {
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
   
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release ../${SOFTWARE}
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
@@ -69,9 +69,6 @@ make_compile () {
   make install
   checkStatus $? "installation of ${SOFTWARE} failed"
 
-  rm $3/lib/libbrotli*.dylib
-  ln -s $3/lib/libbrotlidec-static.a $3/lib/libbrotlidec.a
-  ln -s $3/lib/libbrotlicommon-static.a $3/lib/libbrotlicommon.a
 }
 
 build_main () {

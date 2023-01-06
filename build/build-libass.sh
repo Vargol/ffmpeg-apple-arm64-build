@@ -40,7 +40,7 @@ configure_build () {
   checkStatus $? "change directory failed"
 
   # prepare build
-  LDFLAGS="-L$3/lib -lc++ -lpng -lbz2 -lz -lbrotlidec-static -lbrotlicommon-static"  ./configure --prefix="$3" --enable-static --disable-shared --disable-fontconfig --disable-dependency-tracking
+  LDFLAGS="-L$3/lib -lc++ -lpng -lbz2 -lz -lbrotlidec -lbrotlicommon"  ./configure --prefix="$3" --enable-static --disable-shared --disable-fontconfig --disable-dependency-tracking
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
