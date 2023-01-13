@@ -2,7 +2,7 @@
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
-ENABLE_TOPAZ=TRUE
+ENABLE_TOPAZ=FALSE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -11,7 +11,7 @@ then
     export ENABLE_TOPAZ=TRUE
     echo You have enabled Topaz Video AI support.
     echo This execuatable can not be re-distributed under the terms of the GPL
-    echo and hence is for you private use only.
+    echo and hence is for your private use only.
     echo Using the Topaz Video AI filters requires an activate Topaz Video AI licence.
     echo and install of the Application with the models you wish to use.
     echo To use the Topaz Video AI filters you must set the environment variable VEAI_MODEL_DIR 
