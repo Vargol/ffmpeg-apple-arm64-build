@@ -70,6 +70,9 @@ make_compile () {
   make install
   checkStatus $? "installation of ${SOFTWARE} failed"
 
+  ln -s $3/lib/png16.a $3/lib/libpng16.a
+  checkStatus $? "linking libpng16.a failed"
+
 }
 
 build_main () {
