@@ -2,14 +2,12 @@
 # $1 = script directory
 # $2 = working directory
 # $3 = tool directory
-# $4 = output directory
-# $5 = CPUs
-# $6 = FFmpeg version
+# $4 = fdk-aac version
 
 # load functions
 . $1/functions.sh
 
-SOFTWARE=ffmpeg
+SOFTWARE=fdk-aac
 
 make_directories() {
 
@@ -28,49 +26,31 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  curl -O https://ffmpeg.org/releases/ffmpeg-$6.tar.bz2
+  curl -L https://sourceforge.net/projects/opencore-amr/files/fdk-aac/fdk-aac-$4.tar.gz/download > fdk-aac-$4.tar.gz
   checkStatus $? "download of ${SOFTWARE} failed"
 
-  # unpack ffmpeg
-  bunzip2 ffmpeg-$6.tar.bz2
-  tar -xf ffmpeg-$6.tar
-  cd "ffmpeg-$6/"
+  # unpack
+  tar -xf "fdk-aac-$4.tar.gz"
+  checkStatus $? "unpack fdk-aac failed"
+  cd "fdk-aac-$4/"
   checkStatus $? "change directory failed"
-
+  
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/fdk-aac-$4/"
   checkStatus $? "change directory failed"
 
   # prepare build
-  FF_FLAGS="-L${3}/lib -I${3}/include"
-  export LDFLAGS="$FF_FLAGS"
-  export CFLAGS="$FF_FLAGS"
-
-  FFMPEG_EXTRAS=''
-  
-  if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
-  then
-       FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-sdl2"
-  fi
-
-
-  # --pkg-config-flags="--static" is required to respect the Libs.private flags of the *.pc files
-  ./configure --prefix="$4" --enable-gpl --pkg-config-flags="--static"   --pkg-config=$3/bin/pkg-config \
-      --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
-      --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
-      --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
-
+  ./configure --prefix="$3" --disable-shared --enable-static
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
 
 make_clean() {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/fdk-aac-$4/"
   checkStatus $? "change directory failed"
   make clean
   checkStatus $? "make clean for $SOFTWARE failed"
@@ -80,11 +60,11 @@ make_clean() {
 
 make_compile () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/fdk-aac-$4/"
   checkStatus $? "change directory failed"
 
   # build
-  make -j $5
+  make 
   checkStatus $? "build of ${SOFTWARE} failed"
 
   # install
@@ -95,8 +75,15 @@ make_compile () {
 
 build_main () {
 
+  if [[ -d "$2/${SOFTWARE}" && "${ACTION}" == "skip" ]]
+  then
+      return 0
+  elif [[ -d "$2/${SOFTWARE}" && -z "${ACTION}" ]]
+  then
+      echo "${SOFTWARE} build directory already exists but no action set. Exiting script"
+      exit 0
+  fi
 
-  # ffmpeg we always want to rebuild
 
   if [[ ! -d "$2/${SOFTWARE}" ]]
   then
