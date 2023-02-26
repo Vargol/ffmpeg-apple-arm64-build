@@ -25,6 +25,7 @@ This repository builds FFmpeg and FFprobe for Mac OSX using
     - [opus](https://opus-codec.org/) for Opus de-/encoding
     - [vorbis](https://www.xiph.org) for Vorbis de-/encoding
     - [fdk-aac](https://sourceforge.net/projects/opencore-amr/files/fdk-aac/) for FDK-AAC de-/encoding
+
 To get a full list of all formats and codecs that are supported just execute
 ```
 ./ffmpeg -formats
