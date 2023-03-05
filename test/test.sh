@@ -100,3 +100,10 @@ echoSection "run test vorbis encoding"
 $4/bin/ffmpeg -y -i "$2/test.mp4" -c:a "libvorbis" -vn "$3/test-vorbis.ogg" > "$3/test-vorbis.log" 2>&1
 checkStatus $? "test vorbis"
 echoDurationInSections $START_TIME
+
+# test fdk-aac
+START_TIME=$(currentTimeInSeconds)
+echoSection "run test fdk-aac encoding"
+$4/bin/ffmpeg -y -i "$2/test.mp4" -c:a "libfdk_aac" -vn "$3/test-aac.m4a" > "$3/test-aac.log" 2>&1
+checkStatus $? "test fdk-aac"
+echoDurationInSections $START_TIME
