@@ -42,7 +42,7 @@ download_code () {
 
 
   cd ..
-  curl -Lo topaz-redist_ffmpeg.txz https://github.com/TopazLabs/FFmpeg/releases/download/topaz-v${6}/topaz-ffmpeg-redist-mac-${6}.txz
+  curl -Lo topaz-redist_ffmpeg.txz https://github.com/TopazLabs/FFmpeg/releases/download/topaz-v${6}/topaz-ffmpeg-redist-${6}-mac.txz
   checkStatus $? "download of ${SOFTWARE} librariesfailed"
 
   tar -xJf topaz-redist_ffmpeg.txz
@@ -79,7 +79,7 @@ configure_build () {
       --enable-libaom --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass  --enable-opencl ${FFMPEG_EXTRAS} --enable-veai 
+      --enable-libass  --enable-opencl ${FFMPEG_EXTRAS} --enable-tvai 
 #      --enable-libass --enable-lto --enable-libopenh264 --enable-opencl ${FFMPEG_EXTRAS}
 
   checkStatus $? "configuration of ${SOFTWARE} failed"

@@ -14,10 +14,13 @@ then
     echo and hence is for your private use only.
     echo Using the Topaz Video AI filters requires an activate Topaz Video AI licence.
     echo and install of the Application with the models you wish to use.
-    echo To use the Topaz Video AI filters you must set the environment variable VEAI_MODEL_DIR 
+    echo To use the Topaz Video AI filters you must set the environment variable TVAI_MODEL_DIR 
     echo and log into Topaz using the login commanda
     echo 
-    echo export VEAI_MODEL_DIR="/Applications/Topaz Video AI.app/Contents/Resources/models"
+    echo export TVAI_MODEL_DIR="/Applications/Topaz Video AI.app/Contents/Resources/models"
+    echo export TVAI_MODEL_DATA_DIR="/Applications/Topaz Video AI.app/Contents/Resources/models"
+    echo 
+    echo If you have logged out of your Topaz account you can log in using
     echo out/bin/login topaz_account_email_address topaz_account_password 
 
 fi
@@ -157,11 +160,6 @@ $SCRIPT_DIR/build-libass.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "0.
 checkStatus $? "build libass"
 echoDurationInSections $START_TIME
 
-START_TIME=$(currentTimeInSeconds)
-echoSection "compile fdk-aac"
-$SCRIPT_DIR/build-fdk-aac.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "2.0.2" > "$WORKING_DIR/build-fdk-aac.log" 2>&1
-checkStatus $? "build fdk-aac"
-echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile x265"
@@ -238,7 +236,7 @@ START_TIME=$(currentTimeInSeconds)
 if [[ "${ENABLE_TOPAZ}" == "TRUE" ]]
 then
 echoSection "compile ffmpeg with topaz"
-$SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "5.1.0.24" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
+$SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "6.0.0.6" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
 else
 echoSection "compile ffmpeg"
 $SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "5.1" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
