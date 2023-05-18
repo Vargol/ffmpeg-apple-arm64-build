@@ -107,3 +107,16 @@ echoSection "run test fdk-aac encoding"
 $4/bin/ffmpeg -y -i "$2/test.mp4" -c:a "libfdk_aac" -vn "$3/test-aac.m4a" > "$3/test-aac.log" 2>&1
 checkStatus $? "test fdk-aac"
 echoDurationInSections $START_TIME
+
+if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
+then
+    # test avisynth
+    OLD_DIR=$PWD
+    START_TIME=$(currentTimeInSeconds)
+    echoSection "run test AviSynthPlus script"
+    cd $3/tool/lib
+    $4/bin/ffmpeg -y -i "$2/test-avisynth.avs"  -c:v "libx264" -an "$3/test-avisynth.mp4" > "$3/test-avisynth.log" 2>&1
+    checkStatus $? "test AviSynthPlus"
+    echoDurationInSections $START_TIME
+    cd $OLD_DIR
+fi

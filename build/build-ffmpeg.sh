@@ -56,6 +56,11 @@ configure_build () {
        FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-sdl2"
   fi
 
+  if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
+  then
+       FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-avisynth"
+  fi
+
 
   # --pkg-config-flags="--static" is required to respect the Libs.private flags of the *.pc files
   ./configure --prefix="$4" --enable-gpl --pkg-config-flags="--static"   --pkg-config=$3/bin/pkg-config \
