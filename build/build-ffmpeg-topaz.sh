@@ -72,6 +72,11 @@ configure_build () {
        FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-sdl2"
   fi
 
+   if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
+  then
+       FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-avisynth"
+  fi
+
   TOPAZ_BREAKS='--enable-libopenh264'
 
   # --pkg-config-flags="--static" is required to respect the Libs.private flags of the *.pc files
