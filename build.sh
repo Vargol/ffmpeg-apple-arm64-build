@@ -248,9 +248,9 @@ fi
 if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
 then
     START_TIME=$(currentTimeInSeconds)
-    echoSection "compile AviSythnPlus"
+    echoSection "compile AviSynthPlus"
     $SCRIPT_DIR/build-avisynth.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "v3.7.2" > "$WORKING_DIR/build-avisynth.log" 2>&1
-    checkStatus $? "build AviSythnPlus"
+    checkStatus $? "build AviSynthPlus"
     echoDurationInSections $START_TIME
 fi
 
