@@ -31,7 +31,7 @@ download_code() {
   checkStatus $? "change directory failed"
 
   # download source
-  git clone https://github.com/libsdl-org/SDL.git 
+  git clone -b release-2.28.0 https://github.com/libsdl-org/SDL.git 
   checkStatus $? "download of $SOFTWARE failed"
 
 }

@@ -42,7 +42,7 @@ download_code () {
 
 
   cd ..
-  curl -Lo topaz-redist_ffmpeg.txz https://github.com/TopazLabs/FFmpeg/releases/download/topaz-v${6}/topaz-ffmpeg-redist-${6}-mac.txz
+  curl -Lo topaz-redist_ffmpeg.txz https://github.com/TopazLabs/FFmpeg/releases/download/topaz-v${6}/topaz-ffmpeg-redist-${6}-mac.tar.xz
   checkStatus $? "download of ${SOFTWARE} librariesfailed"
 
   tar -xJf topaz-redist_ffmpeg.txz
