@@ -4,6 +4,8 @@
 ENABLE_FFPLAY=FALSE
 ENABLE_TOPAZ=FALSE
 ENABLE_AVISYNTHPLUS=FALSE
+BUILD_FROM_MAIN=FALSE
+
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -23,6 +25,7 @@ then
     echo 
     echo If you have logged out of your Topaz account you can log in using
     echo out/bin/login topaz_account_email_address topaz_account_password 
+    echo 
 
 fi
 
@@ -36,6 +39,17 @@ then
     export ENABLE_AVISYNTHPLUS=TRUE
     echo "Enabling AviSynthPlus will meaan this binary is not longer staticly built."
     echo "To use AviSynthPlus you will need to run from the tool/lib directory or a directory with a link to the tool/lib/libavisynth.dylib file"
+    echo 
+fi
+
+if [[ "${BUILD_FROM_MAIN}" == "TRUE" ]]
+then
+    export BUILD_FROM_MAIN=TRUE
+    echo "Enabling Build from main."
+    echo "This will build ffmpeg and x265 from their respective source repositories."
+    echo "This may break things, or have unexpected effects, but x265 will be a little more performant"
+    echo "and no longer require that huge patch as the code has been incorporated and further enhancements made."
+    echo 
 fi
 
 # get rid of macports - libiconv

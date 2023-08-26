@@ -5,10 +5,18 @@
 # $4 = CPUs
 # $5 = x265 version
 
-set -x
+ set -x
 # load functions
 . $1/functions.sh
 
+if [[ "${BUILD_FROM_MAIN}" == "TRUE" ]]
+then
+BRANCH=""
+PATCH="git apply $1/x265_arm64_threading.patch"
+else
+BRANCH="--branch stable"
+PATCH="patch -p1 -i $1/apple_arm64_x265.patch"
+fi
 
 make_directories() {
 
@@ -39,7 +47,7 @@ download_code() {
 
   # Build fails when using git shallow clone
   # https://bitbucket.org/multicoreware/x265_git/issues/572/pc-file-is-not-generated
-  git clone https://bitbucket.org/multicoreware/x265_git.git --branch stable
+  git clone https://bitbucket.org/multicoreware/x265_git.git ${BRANCH} 
   checkStatus $? "download of x265 failed"
 
   # TODO: checksum validation (if available)
@@ -58,12 +66,15 @@ configure_build () {
 
 
   #patch for arm64 / neon recognition
-  patch -p1 < $1/apple_arm64_x265.patch
+  #patch -p1 < $1/apple_arm64_x265.patch
+  ${PATCH}
+
 
   cd ../12bit
 
   # prepare build
 
+FF
   cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DHIGH_BIT_DEPTH=ON -DEXPORT_C_API=OFF -DENABLE_CLI=OFF -DMAIN12=ON ../$GIT_DIR/source
   checkStatus $? "configuration of 12bit x265 failed"
 
@@ -78,7 +89,7 @@ configure_build () {
 
   # prepare build
 
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DENABLE_CLI=NO ../$GIT_DIR/source
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_SHARED=NO -DEXTRA_LIB="x265_main10.a;x265_main12.a" -DEXTRA_LINK_FLAGS=-L. -DLINKED_10BIT=ON -DLINKED_12BIT=ON -DENABLE_CLI=OFF ../$GIT_DIR/source
   checkStatus $? "configuration of 8bit x265 failed"
 
 }
@@ -125,14 +136,15 @@ make_compile () {
   cd "$2/x265/8bit"
   checkStatus $? "change directory failed"
 
+  #soft symlink the libraies
+  ln -sf ../10bit/libx265.a libx265_main10.a
+  ln -sf ../12bit/libx265.a libx265_main12.a
+
   # build
   make -j $4
   checkStatus $? "build of x265 failed"
 
   #merge the libaries together
-  ln -sf ../10bit/libx265.a libx265_main10.a
-  ln -sf ../12bit/libx265.a libx265_main12.a
-
   mv libx265.a libx265_main.a
   libtool -static -o libx265.a libx265_main.a libx265_main10.a libx265_main12.a 2>/dev/null
   checkStatus $? "merge of x265 objects failed"
@@ -141,9 +153,6 @@ make_compile () {
   make install
   checkStatus $? "installation of x265 failed"
 
-  # post-installation
-  # modify pkg-config file for usage with ffmpeg (it seems that the flag for threads is missing)
-  sed -i.original -e 's/lx265/lx265 -lpthread/g' $3/lib/pkgconfig/x265.pc
  
 }
 
@@ -174,3 +183,4 @@ build_main () {
 
 
 build_main $@
+

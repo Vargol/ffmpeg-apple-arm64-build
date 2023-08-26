@@ -28,7 +28,8 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone --depth=1 https://aomedia.googlesource.com/aom
+  git clone https://aomedia.googlesource.com/aom
+
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }

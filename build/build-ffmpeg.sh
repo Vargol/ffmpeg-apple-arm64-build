@@ -8,7 +8,7 @@
 
 # load functions
 . $1/functions.sh
-
+set -x
 SOFTWARE=ffmpeg
 
 make_directories() {
@@ -28,20 +28,32 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  curl -O https://ffmpeg.org/releases/ffmpeg-$6.tar.bz2
-  checkStatus $? "download of ${SOFTWARE} failed"
 
-  # unpack ffmpeg
-  bunzip2 ffmpeg-$6.tar.bz2
-  tar -xf ffmpeg-$6.tar
-  cd "ffmpeg-$6/"
-  checkStatus $? "change directory failed"
+
+  if [[ "${BUILD_FROM_MAIN}" == "TRUE" ]]
+  then
+    git clone  https://git.ffmpeg.org/ffmpeg.git
+    cd ffmpeg
+    checkStatus $? "change directory failed"
+    export FFMPEG_DIR="ffmpeg"
+
+  else
+    curl -O https://ffmpeg.org/releases/ffmpeg-$6.tar.bz2
+    checkStatus $? "download of ${SOFTWARE} failed"
+
+    # unpack ffmpeg
+    bunzip2 ffmpeg-$6.tar.bz2
+    tar -xf ffmpeg-$6.tar
+    cd "ffmpeg-$6/"
+    checkStatus $? "change directory failed"
+    export FFMPEG_DIR="ffmpeg-$6"
+  fi
 
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/${FFMPEG_DIR}/"
   checkStatus $? "change directory failed"
 
   # prepare build
@@ -67,7 +79,8 @@ configure_build () {
       --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
+      --enable-libass --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
+#      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
@@ -75,7 +88,7 @@ configure_build () {
 
 make_clean() {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/${FFMPEG_DIR}/"
   checkStatus $? "change directory failed"
   make clean
   checkStatus $? "make clean for $SOFTWARE failed"
@@ -85,7 +98,7 @@ make_clean() {
 
 make_compile () {
 
-  cd "$2/${SOFTWARE}/ffmpeg-$6/"
+  cd "$2/${SOFTWARE}/${FFMPEG_DIR}/"
   checkStatus $? "change directory failed"
 
   # build

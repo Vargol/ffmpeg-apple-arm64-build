@@ -1,0 +1,37 @@
+diff --git a/source/common/threadpool.cpp b/source/common/threadpool.cpp
+index 91e82a24e..e21ae9cd6 100644
+--- a/source/common/threadpool.cpp
++++ b/source/common/threadpool.cpp
+@@ -115,12 +115,6 @@ void WorkerThread::threadMain()
+ {
+     THREAD_NAME("Worker", m_id);
+ 
+-#if _WIN32
+-    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+-#else
+-    __attribute__((unused)) int val = nice(10);
+-#endif
+-
+     m_pool.setCurrentThreadAffinity();
+ 
+     sleepbitmap_t idBit = (sleepbitmap_t)1 << m_id;
+@@ -667,9 +661,17 @@ void ThreadPool::getFrameThreadsCount(x265_param* p, int cpuCount)
+     else if (cpuCount >= 32)
+         p->frameNumThreads = (p->sourceHeight > 2000) ? 6 : 5; 
+     else if (cpuCount >= 16)
+-        p->frameNumThreads = 4; 
++#if MACOS && X265_ARCH_ARM64
++        p->frameNumThreads = 16;
++#else
++        p->frameNumThreads = 4;
++#endif
+     else if (cpuCount >= 8)
+-        p->frameNumThreads = 3;
++#if MACOS && X265_ARCH_ARM64
++         p->frameNumThreads = 8;
++#else
++         p->frameNumThreads = 3;
++#endif
+     else if (cpuCount >= 4)
+         p->frameNumThreads = 2;
+     else
