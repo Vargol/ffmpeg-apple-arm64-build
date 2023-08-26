@@ -44,7 +44,7 @@ configure_build () {
   cd ../aom_build
 
   checkStatus $? "change directory to aom build failed"
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DCONFIG_RUNTIME_CPU_DETECT=no    -DENABLE_NEON=ON -DHAVE_NEON=1 -DENABLE_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-flto -O3" -DCMAKE_C_FLAGS="-flto -O3" -DCMAKE_C_FLAGS_INIT="-flto=8" ../aom/
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DENABLE_NEON=ON -DHAVE_NEON=1 -DENABLE_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-flto -O3" -DCMAKE_C_FLAGS="-flto -O3" -DCMAKE_C_FLAGS_INIT="-flto=8" ../aom/
   checkStatus $? "configuration of aom failed"
 
 }
