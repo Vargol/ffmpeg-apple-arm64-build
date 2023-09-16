@@ -38,6 +38,11 @@ download_code () {
 
 configure_build () {
 
+  cd "$2/${SOFTWARE}/${SOFTWARE}/"
+  checkStatus $? "change directory failed"
+  git apply $1/brotli_man_fix.patch
+  checkStatus $? "git apply patch failed"
+  
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
   
