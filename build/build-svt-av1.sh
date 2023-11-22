@@ -28,8 +28,7 @@ download_code () {
   checkStatus $? "change directory failed"
 
   # download source
-#  git clone https://gitlab.com/AOMediaCodec/SVT-AV1.git 
-  git clone --depth 1 --branch v1.7.0 https://gitlab.com/AOMediaCodec/SVT-AV1.git 
+  git clone https://gitlab.com/AOMediaCodec/SVT-AV1.git 
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
