@@ -40,13 +40,13 @@ configure_build () {
 
   cd "$2/${SOFTWARE}/${SOFTWARE}/"
   checkStatus $? "change directory failed"
-  git apply $1/brotli_man_fix.patch
-  checkStatus $? "git apply patch failed"
+#  git apply $1/brotli_man_fix.patch
+#  checkStatus $? "git apply patch failed"
   
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
   
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
+  cmake -DSHARE_INSTALL_PREFIX=$3 -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
