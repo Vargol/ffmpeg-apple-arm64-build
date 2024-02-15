@@ -3,12 +3,13 @@
 # $2 = working directory
 # $3 = tool directory
 # $4 = CPUs
-# $5 = vorbis version - unused get heads from git
+# $5 = version 
 
 # load functions
 . $1/functions.sh
 
-SOFTWARE=brotli
+SOFTWARE=libwebp
+GIT_REPO=https://chromium.googlesource.com/webm/libwebp
 
 make_directories() {
 
@@ -19,10 +20,6 @@ make_directories() {
   checkStatus $? "create directory failed"
   cd ${SOFTWARE}
   checkStatus $? "change directory failed"
-  mkdir build-${SOFTWARE}
-  checkStatus $? "create directory failed"
-  cd build-${SOFTWARE}
-  checkStatus $? "change directory failed"
 
 }
 
@@ -31,7 +28,7 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://github.com/google/brotli.git 
+  git clone ${GIT_REPO}
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
@@ -40,28 +37,24 @@ configure_build () {
 
   cd "$2/${SOFTWARE}/${SOFTWARE}/"
   checkStatus $? "change directory failed"
-  
-  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
-  checkStatus $? "change directory failed"
-  
-  cmake -DSHARE_INSTALL_PREFIX=$3 -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
+
+  # prepare build
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DBUILD_SHARED_LIBS=OFF .
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
 
 make_clean() {
 
-  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
+  cd "$2/${SOFTWARE}/${SOFTWARE}/"
   checkStatus $? "change directory failed"
   make clean
-  checkStatus $? "make clean for $SOFTWARE failed"
-
 
 }
 
 make_compile () {
 
-  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
+  cd "$2/${SOFTWARE}/${SOFTWARE}/"
   checkStatus $? "change directory failed"
 
   # build
@@ -71,13 +64,13 @@ make_compile () {
   # install
   make install
   checkStatus $? "installation of ${SOFTWARE} failed"
-  
-  #fix up the pkgconfig.
-  sed -i '' "s/lbrotlidec$/lbrotlidec -lbrotlicommon/" $3/lib/pkgconfig/libbrotlidec.pc
 
 }
 
 build_main () {
+
+
+set -x
 
   if [[ -d "$2/${SOFTWARE}" && "${ACTION}" == "skip" ]]
   then

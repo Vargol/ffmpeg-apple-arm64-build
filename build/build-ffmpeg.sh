@@ -79,6 +79,7 @@ configure_build () {
       --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
+      --enable-libsrt --enable-libwebp --enable-libbluray \
       --enable-libass --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 #      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 

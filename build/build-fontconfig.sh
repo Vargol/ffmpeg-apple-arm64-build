@@ -8,7 +8,8 @@
 # load functions
 . $1/functions.sh
 
-SOFTWARE=brotli
+SOFTWARE=fontconfig-2.15.0
+GIT_REPO=yyy
 
 make_directories() {
 
@@ -31,20 +32,19 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://github.com/google/brotli.git 
+  curl -Lo fontconfig-2.15.0.tar.gz https://www.freedesktop.org/software/fontconfig/release/fontconfig-2.15.0.tar.gz
   checkStatus $? "download of ${SOFTWARE} failed"
+  tar -xf fontconfig-2.15.0.tar.gz 
 
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/${SOFTWARE}/"
-  checkStatus $? "change directory failed"
-  
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
-  
-  cmake -DSHARE_INSTALL_PREFIX=$3 -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
+
+  # prepare build
+  ../${SOFTWARE}/configure --prefix="$3" --enable-shared=no  
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
@@ -71,9 +71,6 @@ make_compile () {
   # install
   make install
   checkStatus $? "installation of ${SOFTWARE} failed"
-  
-  #fix up the pkgconfig.
-  sed -i '' "s/lbrotlidec$/lbrotlidec -lbrotlicommon/" $3/lib/pkgconfig/libbrotlidec.pc
 
 }
 

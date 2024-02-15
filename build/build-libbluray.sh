@@ -8,7 +8,8 @@
 # load functions
 . $1/functions.sh
 
-SOFTWARE=brotli
+SOFTWARE=libbluray-1.3.4
+GIT_REPO=yyy
 
 make_directories() {
 
@@ -31,20 +32,19 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://github.com/google/brotli.git 
+  curl -Lo libbluray-1.3.4.tar.bz2 https://download.videolan.org/pub/videolan/libbluray/1.3.4/libbluray-1.3.4.tar.bz2
   checkStatus $? "download of ${SOFTWARE} failed"
+  tar -xf libbluray-1.3.4.tar.bz2 
 
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/${SOFTWARE}/"
-  checkStatus $? "change directory failed"
-  
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
-  
-  cmake -DSHARE_INSTALL_PREFIX=$3 -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
+
+  # prepare build
+  LIBXML2_CFLAGS='-I /usr/include/libxml2', LIBXML2_LIBS='-lxml2' ../${SOFTWARE}/configure --prefix="$3" --enable-shared=no --disable-bdjava-jar
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
@@ -71,10 +71,8 @@ make_compile () {
   # install
   make install
   checkStatus $? "installation of ${SOFTWARE} failed"
-  
-  #fix up the pkgconfig.
-  sed -i '' "s/lbrotlidec$/lbrotlidec -lbrotlicommon/" $3/lib/pkgconfig/libbrotlidec.pc
-
+  sed -i '' "s/libxml-2.0 >= 2.6//" $3/lib/pkgconfig/libbluray.pc
+  sed -i '' "s/lbluray/lbluray -lxml2/" $3/lib/pkgconfig/libbluray.pc
 }
 
 build_main () {

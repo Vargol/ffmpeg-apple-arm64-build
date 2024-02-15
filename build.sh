@@ -4,7 +4,7 @@
 ENABLE_FFPLAY=FALSE
 ENABLE_TOPAZ=FALSE
 ENABLE_AVISYNTHPLUS=FALSE
-BUILD_FROM_MAIN=FALSE
+BUILD_FROM_MAIN=TRUE
 
 
 # set true for dependant features, export those needed in ffmpeg build script
@@ -247,6 +247,36 @@ START_TIME=$(currentTimeInSeconds)
 echoSection "compile opus"
 $SCRIPT_DIR/build-opus.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "1.3.1" > "$WORKING_DIR/build-opus.log" 2>&1
 checkStatus $? "build opus"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile fontconfig"
+$SCRIPT_DIR/build-fontconfig.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-fontconfig.log" 2>&1
+checkStatus $? "build fontconfig"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile libbluray"
+$SCRIPT_DIR/build-libbluray.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-libbluray.log" 2>&1
+checkStatus $? "build libbluray"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile libwebp"
+$SCRIPT_DIR/build-libwebp.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-libwebp.log" 2>&1
+checkStatus $? "build libwebp"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile openssl"
+$SCRIPT_DIR/build-openssl.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-openssl.log" 2>&1
+checkStatus $? "build openssl"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
+echoSection "compile libsrt"
+$SCRIPT_DIR/build-libsrt.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-libsrt.log" 2>&1
+checkStatus $? "build srt"
 echoDurationInSections $START_TIME
 
 
