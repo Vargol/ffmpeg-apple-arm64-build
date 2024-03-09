@@ -245,7 +245,7 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile opus"
-$SCRIPT_DIR/build-opus.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "1.3.1" > "$WORKING_DIR/build-opus.log" 2>&1
+$SCRIPT_DIR/build-opus.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "v1.5.1" > "$WORKING_DIR/build-opus.log" 2>&1
 checkStatus $? "build opus"
 echoDurationInSections $START_TIME
 

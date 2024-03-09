@@ -11,6 +11,7 @@
 SOFTWARE=opus
 
 make_directories() {
+set -x
 
   # start in working directory
   cd "$2"
@@ -20,38 +21,44 @@ make_directories() {
   cd ${SOFTWARE}
   checkStatus $? "change directory failed"
 
+  mkdir build-${SOFTWARE}
+  checkStatus $? "create directory failed"
+  cd build-${SOFTWARE}
+  checkStatus $? "change directory failed"
+
+
 }
 
 download_code () {
 
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
+
   # download source
-  curl -O -L https://archive.mozilla.org/pub/opus/opus-$5.tar.gz
+  git clone --depth 1 https://gitlab.xiph.org/xiph/opus.git
   checkStatus $? "download of ${SOFTWARE} failed"
 
-  # unpack
-  tar -zxf "opus-$5.tar.gz"
-  checkStatus $? "unpack opus failed"
-  cd "opus-$5/"
+  cd ${SOFTWARE}
   checkStatus $? "change directory failed"
 
 }
 
 configure_build () {
 
-  cd "$2/${SOFTWARE}/opus-$5/"
+  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
 
-  # prepare build
-  ./configure --prefix="$3" --enable-shared=no
+  
+  #cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DOPUS_ARM_ASM=TRUE -DOPUS_MAY_HAVE_NEON=FALSE -DOPUS_PRESUME_NEON=TRUE -DCOMPILER_SUPPORT_NEON=TRUE -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DBUILD_SHARED_LIBS=OFF ../${SOFTWARE}
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
 
+
 make_clean() {
 
-  cd "$2/${SOFTWARE}/opus-$5/"
+  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
   make clean
   checkStatus $? "make clean for $SOFTWARE failed"
@@ -61,7 +68,7 @@ make_clean() {
 
 make_compile () {
 
-  cd "$2/${SOFTWARE}/opus-$5/"
+  cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
 
   # build
@@ -75,6 +82,7 @@ make_compile () {
 }
 
 build_main () {
+set -x
 
   if [[ -d "$2/${SOFTWARE}" && "${ACTION}" == "skip" ]]
   then

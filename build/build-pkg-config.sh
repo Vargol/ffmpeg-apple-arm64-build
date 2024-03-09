@@ -46,7 +46,7 @@ configure_build() {
   checkStatus $? "change directory failed"
 
   # prepare build
-  ./configure --prefix="$3" --with-pc-path="$3/lib/pkgconfig" --with-internal-glib
+  CFLAGS="-Wno-int-conversion" CXXFLAGS="-Wno-int-conversion" ./configure --prefix="$3" --with-pc-path="$3/lib/pkgconfig" --with-internal-glib
   checkStatus $? "configuration of pkg-config failed"
 
 }
@@ -68,7 +68,7 @@ make_compile() {
   checkStatus $? "change directory failed"
 
   # build
-  make
+  make 
   checkStatus $? "build of pkg-config failed"
 
   # install
@@ -80,6 +80,7 @@ make_compile() {
 
 
 build_main () {
+
 
 
   if [[ -d "$2/pkg-config" && "${ACTION}" == "skip" ]]
