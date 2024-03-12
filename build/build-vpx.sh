@@ -8,6 +8,8 @@
 # load functions
 . $1/functions.sh
 
+set -x
+
 SOFTWARE=vpx
 
 make_directories() {
@@ -49,6 +51,7 @@ sed -i.original -e 's/-march=armv8-a//g' build/make/configure.sh
                     --enable-postproc \
                     --enable-multithread \
                     --enable-experimental \
+                    --disable-sve2 \
                     --disable-install-docs \
                     --disable-debug-libs
   
