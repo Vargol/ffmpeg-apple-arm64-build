@@ -40,6 +40,12 @@ download_code () {
 
 configure_build () {
 
+  cd "$2/${SOFTWARE}/${SOFTWARE}/"
+  checkStatus $? "change directory failed"
+  git apply $1/libblu_dec_init.patch
+  checkStatus $? "git apply patch failed"
+
+
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
 

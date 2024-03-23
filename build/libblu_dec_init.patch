@@ -1,0 +1,39 @@
+diff --git a/src/libbluray/disc/dec.c b/src/libbluray/disc/dec.c
+index 73f64a37..17287520 100644
+--- a/src/libbluray/disc/dec.c
++++ b/src/libbluray/disc/dec.c
+@@ -284,7 +284,7 @@ static void _dec_load(BD_DEC *dec, BD_ENC_INFO *i)
+  *
+  */
+ 
+-BD_DEC *dec_init(struct dec_dev *dev, BD_ENC_INFO *enc_info,
++BD_DEC *lbr_dec_init(struct dec_dev *dev, BD_ENC_INFO *enc_info,
+                  const char *keyfile_path,
+                  void *regs, void *psr_read, void *psr_write)
+ {
+diff --git a/src/libbluray/disc/dec.h b/src/libbluray/disc/dec.h
+index d1329be2..cb1e3e92 100644
+--- a/src/libbluray/disc/dec.h
++++ b/src/libbluray/disc/dec.h
+@@ -45,7 +45,7 @@ struct dec_dev {
+ 
+ typedef struct bd_dec BD_DEC;
+ 
+-BD_PRIVATE BD_DEC *dec_init(struct dec_dev *dev,
++BD_PRIVATE BD_DEC *lbr_dec_init(struct dec_dev *dev,
+                             struct bd_enc_info *enc_info,
+                             const char *keyfile_path,
+                             void *regs, void *psr_read, void *psr_write);
+diff --git a/src/libbluray/disc/disc.c b/src/libbluray/disc/disc.c
+index d5e39c49..bb0e3a09 100644
+--- a/src/libbluray/disc/disc.c
++++ b/src/libbluray/disc/disc.c
+@@ -348,7 +348,7 @@ BD_DISC *disc_open(const char *device_path,
+     }
+ 
+     struct dec_dev dev = { p->fs_handle, p->pf_file_open_bdrom, p, (file_openFp)disc_open_path, p->disc_root, device_path };
+-    p->dec = dec_init(&dev, enc_info, keyfile_path, regs, psr_read, psr_write);
++    p->dec = lbr_dec_init(&dev, enc_info, keyfile_path, regs, psr_read, psr_write);
+ 
+     return p;
+ }

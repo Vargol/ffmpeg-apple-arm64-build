@@ -57,7 +57,7 @@ configure_build () {
   checkStatus $? "change directory failed"
 
   # prepare build
-  FF_FLAGS="-L${3}/lib -I${3}/include"
+  FF_FLAGS="-L${3}/lib -I${3}/include "
   export LDFLAGS="$FF_FLAGS"
   export CFLAGS="$FF_FLAGS"
 
@@ -78,8 +78,8 @@ configure_build () {
   ./configure --prefix="$4" --enable-gpl --pkg-config-flags="--static"   --pkg-config=$3/bin/pkg-config \
       --enable-libaom --enable-libopenh264 --enable-libx264 --enable-libx265 --enable-libvpx \
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
-      --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis --enable-libsvtav1 \
-      --enable-libsrt --enable-libwebp --enable-libbluray \
+      --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis \
+      --enable-libsrt --enable-libwebp --enable-libbluray  --enable-libsvtav1 \
       --enable-libass --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 #      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 
