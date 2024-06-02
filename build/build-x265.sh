@@ -12,10 +12,11 @@
 if [[ "${BUILD_FROM_MAIN}" == "TRUE" ]]
 then
 BRANCH=""
-PATCH="git apply $1/x265_arm64_threading.patch"
+PATCH="patch -p1 -i  $1/x265_arm64_threading.patch"
 else
 BRANCH="--branch stable"
-PATCH="patch -p1 -i $1/apple_arm64_x265.patch"
+PATCH="patch -p1 -i $1/x265_arm64_threading.patch"
+#PATCH="patch -p1 -i $1/apple_arm64_x265.patch"
 fi
 
 make_directories() {

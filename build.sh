@@ -1,11 +1,10 @@
-#!/bin/sh
+!/bin/sh
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
 ENABLE_TOPAZ=FALSE
 ENABLE_AVISYNTHPLUS=FALSE
-BUILD_FROM_MAIN=TRUE
-
+BUILD_FROM_MAIN=FALSE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -47,13 +46,14 @@ then
     export BUILD_FROM_MAIN=TRUE
     echo "Enabling Build from main."
     echo "This will build ffmpeg and x265 from their respective source repositories."
-    echo "This may break things, or have unexpected effects, but x265 will be a little more performant"
-    echo "and no longer require that huge patch as the code has been incorporated and further enhancements made."
+    echo "This will this will get you the latest and greatest, but increases the chances the build will fail"
     echo 
 fi
 
 # get rid of macports - libiconv
 export PATH=`echo $PATH | sed 's/:/\n/g' | grep -v '/opt/local' | xargs | tr ' ' ':'`
+
+which sed
 
 ACTION=$1
 if [[ -z "${ACTION}" ]]
@@ -86,6 +86,9 @@ TOOL_DIR="$WORKING_DIR/tool"
 echo "tool directory is ${TOOL_DIR}"
 OUT_DIR="$WORKING_DIR/out"
 echo "output directory is ${OUT_DIR}"
+
+export PKG_CONFIG_PATH=${TOOL_DIR}/lib/pkgconfig
+
 
 # load functions
 . $SCRIPT_DIR/functions.sh
@@ -190,7 +193,7 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile x265"
-$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.4" > "$WORKING_DIR/build-x265.log" 2>&1
+$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.6" > "$WORKING_DIR/build-x265.log" 2>&1
 checkStatus $? "build x265"
 echoDurationInSections $START_TIME
 
@@ -303,10 +306,10 @@ START_TIME=$(currentTimeInSeconds)
 if [[ "${ENABLE_TOPAZ}" == "TRUE" ]]
 then
 echoSection "compile ffmpeg with topaz"
-$SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "6.1.0.8" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
+$SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.0.1" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
 else
 echoSection "compile ffmpeg"
-$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "6.0" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
+$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.1" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
 fi
 
 checkStatus $? "build ffmpeg"

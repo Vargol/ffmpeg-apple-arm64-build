@@ -42,7 +42,7 @@ configure_build () {
 
   cd "$2/${SOFTWARE}/${SOFTWARE}/"
   checkStatus $? "change directory failed"
-  git apply $1/libblu_dec_init.patch
+  patch -p1  -i $1/libblu_dec_init.patch
   checkStatus $? "git apply patch failed"
 
 
