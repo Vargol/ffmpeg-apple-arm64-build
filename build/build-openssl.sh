@@ -43,7 +43,7 @@ configure_build () {
   checkStatus $? "change directory failed"
 
   # prepare build
-  $2/${SOFTWARE}/${SOFTWARE}/configure --prefix="$3" 
+  $2/${SOFTWARE}/${SOFTWARE}/configure --prefix="$3"  no-shared
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
