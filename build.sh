@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 # Option feature set to FALSE if not rewuired and TRUE if required
 ENABLE_FFPLAY=FALSE
