@@ -4,7 +4,7 @@
 ENABLE_FFPLAY=FALSE
 ENABLE_TOPAZ=FALSE
 ENABLE_AVISYNTHPLUS=FALSE
-BUILD_FROM_MAIN=FALSE
+BUILD_FROM_MAIN=TRUE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -309,7 +309,7 @@ echoSection "compile ffmpeg with topaz"
 $SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.0.3" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
 else
 echoSection "compile ffmpeg"
-$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.1" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
+$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.2" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
 fi
 
 checkStatus $? "build ffmpeg"
