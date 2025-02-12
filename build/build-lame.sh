@@ -25,8 +25,10 @@ download_code () {
 
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
+
   # download source
-  curl -O https://netcologne.dl.sourceforge.net/project/lame/lame/$4/lame-$4.tar.gz
+  curl -LO https://downloads.sourceforge.net/project/lame/lame/${4}/lame-${4}.tar.gz
+
   checkStatus $? "download of ${SOFTWARE} failed"
 
   # unpack

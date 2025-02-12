@@ -31,7 +31,8 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://github.com/madler/zlib.git 
+#  git clone https://github.com/madler/zlib.git 
+  git clone --branch $5 https://github.com/madler/zlib.git 
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
