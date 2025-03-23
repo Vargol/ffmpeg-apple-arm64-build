@@ -4,7 +4,7 @@
 ENABLE_FFPLAY=FALSE
 ENABLE_TOPAZ=FALSE
 ENABLE_AVISYNTHPLUS=FALSE
-BUILD_FROM_MAIN=TRUE
+BUILD_FROM_MAIN=FALSE
 
 # set true for dependant features, export those needed in ffmpeg build script
  
@@ -133,7 +133,7 @@ COMPILATION_START_TIME=$(currentTimeInSeconds)
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile cmake"
-$SCRIPT_DIR/build-cmake.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.20" "3.20.2" > "$WORKING_DIR/build-cmake.log" 2>&1
+$SCRIPT_DIR/build-cmake.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.31" "3.31.6" > "$WORKING_DIR/build-cmake.log" 2>&1
 checkStatus $? "build cmake"
 echoDurationInSections $START_TIME
 
@@ -193,7 +193,7 @@ echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
 echoSection "compile x265"
-$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "3.6" > "$WORKING_DIR/build-x265.log" 2>&1
+$SCRIPT_DIR/build-x265.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "4.1" > "$WORKING_DIR/build-x265.log" 2>&1
 checkStatus $? "build x265"
 echoDurationInSections $START_TIME
 
@@ -309,7 +309,7 @@ echoSection "compile ffmpeg with topaz"
 $SCRIPT_DIR/build-ffmpeg-topaz.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.0.3" > "$WORKING_DIR/build-ffmpeg-topaz.log" 2>&1
 else
 echoSection "compile ffmpeg"
-$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.0.2" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
+$SCRIPT_DIR/build-ffmpeg.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$OUT_DIR" "$CPUS" "7.1.1" > "$WORKING_DIR/build-ffmpeg.log" 2>&1
 fi
 
 checkStatus $? "build ffmpeg"

@@ -51,6 +51,10 @@ download_code() {
   git clone https://bitbucket.org/multicoreware/x265_git.git ${BRANCH} 
   checkStatus $? "download of x265 failed"
 
+  GIT_DIR=x265_git
+  cd "$2/x265/$GIT_DIR"
+  checkStatus $? "change directory failed"
+  git revert b354c009a60bcd6d7fc04014e200a1ee9c45c167 --no-commit
   # TODO: checksum validation (if available)
 
   # unpack

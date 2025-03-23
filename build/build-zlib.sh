@@ -31,18 +31,22 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-#  git clone https://github.com/madler/zlib.git 
-  git clone --branch $5 https://github.com/madler/zlib.git 
+  #git clone --branch zconf.h_fix https://github.com/cmake-remake/zlib.git
+  git clone https://github.com/madler/zlib.git
+  #git clone --branch v1.3.1  https://github.com/madler/zlib.git 
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
 
 configure_build () {
 
+set -x
+
   cd "$2/${SOFTWARE}/build-${SOFTWARE}/"
   checkStatus $? "change directory failed"
 
   # prepare build
+  #CFLAGS="${CFLAGS} -D_LARGEFILE64_SOURCE=1" cmake --trace-expand -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DENABLE_SHARED=NO ../${SOFTWARE}
   cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DINSTALL_PKGCONFIG_DIR=$3/lib/pkgconfig -DENABLE_SHARED=NO ../${SOFTWARE}
   checkStatus $? "configuration of ${SOFTWARE} failed"
 

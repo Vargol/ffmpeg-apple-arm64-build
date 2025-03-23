@@ -29,7 +29,9 @@ download_code() {
   cd $2/cmake
 
   # download source
-  curl -O https://cmake.org/files/v$5/cmake-$6.tar.gz
+  # curl -O https://cmake.org/files/v$5/cmake-$6.tar.gz
+  curl -LO https://github.com/Kitware/CMake/releases/download/v${6}/cmake-${6}.tar.gz
+
   checkStatus $? "download of cmake failed"
 
   # TODO: checksum validation (if available)
