@@ -38,7 +38,7 @@ configure_build () {
   checkStatus $? "change directory failed"
 
   # prepare build
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DBUILD_SHARED_LIBS=OFF .
+  cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 -DBUILD_SHARED_LIBS=OFF -DOGG_ROOT=$3 -DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DCMAKE_POLICY_DEFAULT_CMP0144=NEW -DCMAKE_FIND_FRAMEWORK=LAST .
   checkStatus $? "configuration of ${SOFTWARE} failed"
 
 }
