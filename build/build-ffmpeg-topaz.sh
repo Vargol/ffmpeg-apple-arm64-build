@@ -70,6 +70,8 @@ configure_build () {
   if [[ "${ENABLE_FFPLAY}" == "TRUE" ]]
   then
        FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --enable-sdl2"
+  else
+	   FFMPEG_EXTRAS="${FFMPEG_EXTRAS} --disable-sdl2 --disable-ffplay"
   fi
 
   if [[ "${ENABLE_AVISYNTHPLUS}" == "TRUE" ]]
