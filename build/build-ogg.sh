@@ -27,7 +27,7 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://gitlab.xiph.org/xiph/ogg.git
+  git clone --depth 1 https://github.com/xiph/ogg.git
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }

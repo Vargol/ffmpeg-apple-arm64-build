@@ -46,6 +46,7 @@ configure_build () {
   cmake -DCMAKE_INSTALL_PREFIX:PATH=$3 \
         -DFT_DISABLE_HARFBUZZ=ON \
         -DFT_REQUIRE_BZIP2=ON \
+        -DFT_DISABLE_HVF=ON \
         -DBUILD_SHARED_LIBS=OFF \
         -DCMAKE_BUILD_TYPE=Release ../$SOFTWARE
   checkStatus $? "configuration of ${SOFTWARE} failed"

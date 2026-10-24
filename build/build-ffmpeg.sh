@@ -80,7 +80,7 @@ configure_build () {
       --enable-libmp3lame --enable-libopus --enable-neon --enable-runtime-cpudetect \
       --enable-audiotoolbox --enable-videotoolbox --enable-libvorbis \
       --enable-libsrt --enable-libwebp --enable-libbluray  --enable-libsvtav1 \
-      --enable-libass --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
+      --enable-libass --enable-nonfree --enable-libfdk-aac --enable-opencl --enable-libvidstab ${FFMPEG_EXTRAS}
 #      --enable-libass --enable-lto --enable-nonfree --enable-libfdk-aac --enable-opencl ${FFMPEG_EXTRAS}
 
   checkStatus $? "configuration of ${SOFTWARE} failed"

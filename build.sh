@@ -265,6 +265,12 @@ checkStatus $? "build libbluray"
 echoDurationInSections $START_TIME
 
 START_TIME=$(currentTimeInSeconds)
+echoSection "compile vidstab"
+$SCRIPT_DIR/build-vidstab.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-vidstab.log" 2>&1
+checkStatus $? "build vidstab"
+echoDurationInSections $START_TIME
+
+START_TIME=$(currentTimeInSeconds)
 echoSection "compile libwebp"
 $SCRIPT_DIR/build-libwebp.sh "$SCRIPT_DIR" "$WORKING_DIR" "$TOOL_DIR" "$CPUS" "xxx" > "$WORKING_DIR/build-libwebp.log" 2>&1
 checkStatus $? "build libwebp"

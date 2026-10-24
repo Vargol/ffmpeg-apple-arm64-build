@@ -35,7 +35,7 @@ download_code () {
   checkStatus $? "change directory failed"
 
   # download source
-  git clone --depth 1 https://gitlab.xiph.org/xiph/opus.git
+  git clone --depth 1 https://github.com/xiph/opus.git
   checkStatus $? "download of ${SOFTWARE} failed"
 
   cd ${SOFTWARE}

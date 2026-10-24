@@ -27,7 +27,7 @@ download_code () {
   cd "$2/${SOFTWARE}"
   checkStatus $? "change directory failed"
   # download source
-  git clone https://gitlab.xiph.org/xiph/vorbis.git
+  git clone --depth 1 https://github.com/xiph/vorbis.git
   checkStatus $? "download of ${SOFTWARE} failed"
 
 }
